@@ -1,30 +1,33 @@
 class Bob
-  # def hey(saying)  
-  #   while true
-  #     puts "Say something to Bob."
-  #     #end multi-line user input with "/" + Enter
-  #     $/ = ?\/
-  #     phrase = gets.chomp
-  #     puts conversation(phrase)
-  #   end
-  #  end
-  
-  def hey(phrase)
-    allCaps = (phrase =~ /[A-Z]{2,}+!|[A-Z]{3,}+\?|[A-Z]{4,}/)
-    question = (phrase =~ /([\S.*+\s+]+\?+\z)/)
-    nothing = (phrase =~ /\A\s*\z/)
+  def run
+    while true
+      puts "Say something to Bob."
+      #end multi-line user input with "/" + Enter
+      $/ = ?\/
+      phrase = gets.chomp
+      puts hey(phrase)
+    end
+   end
 
-    if allCaps
-      return 'Woah, chill out!'
-    elsif question
-      return 'Sure.' 
-    elsif nothing
-      return 'Fine. Be that way!'
+  def hey(phrase)
+    allCaps = /[A-Z]{2,}+!|[A-Z]{3,}+\?|[A-Z]{4,}/
+    question = lambda { |phrase| phrase.end_with?('?') }
+    nothing = lambda { |phrase| phrase.strip.empty? }
+
+    case phrase
+    when allCaps
+      'Woah, chill out!'
+    when nothing
+      'Fine. Be that way!'
+    when question
+      'Sure.' 
     else
-      return 'Whatever.'
+      'Whatever.'
     end
   end
 end
 
-
+if $0 == __FILE__
+  Bob.new.run
+end
   
